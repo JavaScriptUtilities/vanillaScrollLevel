@@ -1,0 +1,119 @@
+@charset "UTF-8";
+
+/* ----------------------------------------------------------
+  Base Reset
+---------------------------------------------------------- */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+/* ----------------------------------------------------------
+  Sections
+---------------------------------------------------------- */
+
+section {
+    z-index: 1;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+section:nth-child(odd) {
+    background-color: #F0F0F0;
+}
+
+h2 {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    padding: 1em;
+    text-align: center;
+}
+
+/* ----------------------------------------------------------
+  Items
+---------------------------------------------------------- */
+
+/* Common
+-------------------------- */
+
+.square,
+.circle {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2em;
+    height: 2em;
+    margin-top: -1em;
+    margin-left: -1em;
+    font-size: 10vw;
+    background-color: #CCC;
+}
+
+/* Circle
+-------------------------- */
+
+.circle {
+    border-radius: 99em;
+}
+
+/* Anim */
+
+.circle {
+    opacity: var(--percentscrollfirsthalfshrink);
+    will-change: opacity;
+}
+
+/* Image
+-------------------------- */
+
+.img {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 60vh;
+    margin: auto;
+    text-align: center;
+}
+
+.img img {
+    object-fit: cover;
+}
+
+/* Anim */
+
+[data-scroll-level="0"] .img img {
+    transform: scale(calc(1 + 0.3 * var(--percentscrolllasthalfshrink) ));
+    will-change: transform;
+}
+
+[data-scroll-level="100"] .img img {
+    transform: scale(1);
+}
+
+/* Square
+-------------------------- */
+
+.square {
+    background-color: #999;
+    border-radius: 0 0 0 20px;
+    transform-origin: center center;
+}
+
+/* Anim */
+
+.square {
+    transform: rotateZ(calc(360deg * var(--percentscrollgrow) ));
+    will-change: transform;
+}
