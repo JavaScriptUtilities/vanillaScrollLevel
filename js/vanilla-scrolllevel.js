@@ -1,6 +1,6 @@
 /*
  * Plugin Name: Vanilla Scroll Level
- * Version: 0.1.0
+ * Version: 0.2.0
  * Plugin URL: https://github.com/JavaScriptUtilities/vanillaScrollLevel
  * Vanilla Scroll Level may be freely distributed under the MIT license.
  * Usage status: Work in progress
@@ -14,6 +14,7 @@ var vanillaScrollLevel = function(settings) {
         winScroll = 0,
         percentScroll = 0,
         _animDisabled = true,
+        $body = document.body,
         _settings = {};
 
     var _defaultSettings = {
@@ -37,7 +38,7 @@ var vanillaScrollLevel = function(settings) {
     function on_resize() {
         winHeight = window.innerHeight;
         _animDisabled = window.innerWidth < _settings.animDisabledLevel;
-        document.body.setAttribute('data-scroll-anims', _animDisabled ? '0' : '1');
+        $body.setAttribute('data-scroll-anims', _animDisabled ? '0' : '1');
         on_scroll_requestanim();
     }
 
@@ -59,18 +60,19 @@ var vanillaScrollLevel = function(settings) {
     ---------------------------------------------------------- */
 
     function set_css_vars() {
-        var scrollTmp = 0;
+        var scrollTmp = 0,
+            attributePrefix = '--percentscroll';
 
         /* Full
         -------------------------- */
 
         /* 0 -> 0.5 -> 1 */
         scrollTmp = Math.min(percentScroll * _settings.scrollPauseDelta, 1);
-        document.body.style.setProperty('--percentscrollgrow', scrollTmp);
+        $body.style.setProperty(attributePrefix + 'grow', scrollTmp);
 
         /* 1 -> 0.5 -> 0 */
         scrollTmp = 1 - Math.min(percentScroll * _settings.scrollPauseDelta, 1);
-        document.body.style.setProperty('--percentscrollshrink', scrollTmp);
+        $body.style.setProperty(attributePrefix + 'shrink', scrollTmp);
 
         /* First half
         -------------------------- */
@@ -80,14 +82,14 @@ var vanillaScrollLevel = function(settings) {
         if (percentScroll <= 0.5) {
             scrollTmp = Math.max(0, percentScroll * _settings.scrollPauseDeltaHalf * 2 - _settings.scrollPauseDeltaHalf + 1);
         }
-        document.body.style.setProperty('--percentscrollfirsthalfgrow', scrollTmp);
+        $body.style.setProperty(attributePrefix + 'firsthalfgrow', scrollTmp);
 
         /* 1.. -> 0 -> 0 */
         scrollTmp = 0;
         if (percentScroll <= 0.5) {
             scrollTmp = Math.min(((1 - percentScroll) * 2 - 1) * _settings.scrollPauseDeltaHalf, 1);
         }
-        document.body.style.setProperty('--percentscrollfirsthalfshrink', scrollTmp);
+        $body.style.setProperty(attributePrefix + 'firsthalfshrink', scrollTmp);
 
         /* Last half
         -------------------------- */
@@ -97,7 +99,7 @@ var vanillaScrollLevel = function(settings) {
         if (percentScroll >= 0.5) {
             scrollTmp = Math.max(0, 1 - ((percentScroll - 0.5) * 2) * _settings.scrollPauseDeltaHalf);
         }
-        document.body.style.setProperty('--percentscrolllasthalfshrink', scrollTmp);
+        $body.style.setProperty(attributePrefix + 'lasthalfshrink', scrollTmp);
 
         /* 0 -> 0 -> ..1 */
         scrollTmp = 0;
@@ -105,13 +107,15 @@ var vanillaScrollLevel = function(settings) {
             scrollTmp = Math.min(1, (percentScroll - 0.5) * 2 * _settings.scrollPauseDeltaHalf);
         }
 
-        document.body.style.setProperty('--percentscrolllasthalfgrow', scrollTmp);
+        $body.style.setProperty(attributePrefix + 'lasthalfgrow', scrollTmp);
     }
 
     function set_body_attributes() {
-        document.body.setAttribute('data-scroll-level-quart', Math.floor(winScroll / winHeight * 4) * 25);
-        document.body.setAttribute('data-scroll-level-double', Math.floor(winScroll / winHeight * 2) * 50);
-        document.body.setAttribute('data-scroll-level', Math.floor(winScroll / winHeight) * 100);
+        var scrollRatio = winScroll / winHeight,
+            attributePrefix = 'data-scroll-level';
+        $body.setAttribute(attributePrefix, Math.floor(scrollRatio) * 100);
+        $body.setAttribute(attributePrefix + '-double', Math.floor(scrollRatio * 2) * 50);
+        $body.setAttribute(attributePrefix + '-quart', Math.floor(scrollRatio * 4) * 25);
     }
 
     /* ----------------------------------------------------------
