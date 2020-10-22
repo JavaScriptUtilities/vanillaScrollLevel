@@ -1,6 +1,6 @@
 /*
  * Plugin Name: Vanilla Scroll Level
- * Version: 0.2.0
+ * Version: 0.2.1
  * Plugin URL: https://github.com/JavaScriptUtilities/vanillaScrollLevel
  * Vanilla Scroll Level may be freely distributed under the MIT license.
  * Usage status: Work in progress
@@ -116,6 +116,7 @@ var vanillaScrollLevel = function(settings) {
         $body.setAttribute(attributePrefix, Math.floor(scrollRatio) * 100);
         $body.setAttribute(attributePrefix + '-double', Math.floor(scrollRatio * 2) * 50);
         $body.setAttribute(attributePrefix + '-quart', Math.floor(scrollRatio * 4) * 25);
+        $body.setAttribute(attributePrefix + '-percent', Math.floor(scrollRatio * 100));
     }
 
     /* ----------------------------------------------------------
