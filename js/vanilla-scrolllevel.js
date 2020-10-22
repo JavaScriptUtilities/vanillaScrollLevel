@@ -1,6 +1,6 @@
 /*
  * Plugin Name: Vanilla Scroll Level
- * Version: 0.2.1
+ * Version: 0.2.2
  * Plugin URL: https://github.com/JavaScriptUtilities/vanillaScrollLevel
  * Vanilla Scroll Level may be freely distributed under the MIT license.
  * Usage status: Work in progress
@@ -21,6 +21,9 @@ var vanillaScrollLevel = function(settings) {
         animDisabledLevel: 0,
         scrollPauseDelta: 1.1,
         scrollPauseDeltaHalf: 1.1,
+        getWinHeight: function() {
+            return window.innerHeight;
+        }
     };
 
     /* Init Settings */
@@ -36,7 +39,7 @@ var vanillaScrollLevel = function(settings) {
     ---------------------------------------------------------- */
 
     function on_resize() {
-        winHeight = window.innerHeight;
+        winHeight = _settings.getWinHeight();
         _animDisabled = window.innerWidth < _settings.animDisabledLevel;
         $body.setAttribute('data-scroll-anims', _animDisabled ? '0' : '1');
         on_scroll_requestanim();
